@@ -1,0 +1,1 @@
+web: bundle exec ruby legendas.rb -p $PORT

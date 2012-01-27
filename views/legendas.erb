@@ -1,0 +1,45 @@
+﻿<script>
+	$(document).ready(function() {
+		$(".tooltip").popover({placement: 'left', html: true});
+		$(".sorted").tablesorter();
+	});
+</script>
+<section id="legendas">
+	<form action="/" class="form-stacked" method="post">
+        <fieldset>
+          <legend>Encontrar legendas</legend>
+          <div class="clearfix">
+            <label for="filme">Nome do filme / release</label>
+            <div class="input">
+              <input class="xlarge" id="filme" name="filme" size="30" type="text" value="<%=params[:filme]%>">
+            </div>
+          </div><!-- /clearfix -->
+        </fieldset>
+        <div class="actions">
+          <button type="submit" class="btn primary">Buscar</button>
+        </div>
+	</form>
+	<% if @erro %>
+		<div class="alert-message error">
+		  <p><%=@erro%></p>
+		</div>
+	<% end %>
+	<% unless @filmes.nil? %>
+		<% if @filmes.empty? %>
+			<div class="alert-message warning">
+			  <p><strong>Nenhum resultado encontrado para '<%=params[:filme]%>'!</strong> Tente outro nome de release ou legenda.</p>
+			</div>
+		<% else %>
+			<table class="zebra-striped sorted">
+				<thead>
+					<tr><th>#</th><th>Filme</th><th>Release</th><th>Downloads</th></tr>
+				</thead>
+				<tbody>
+					<% @filmes.each do |filme| %>
+						<tr><td><%=filme[:i]%></td><td><%=filme[:titulo]%><br/><%=filme[:titulo_original]%></td><td class="tooltip" title="<%=filme[:titulo_original]%>" data-content="<em><%=filme[:titulo]%></em><br><b>CD's:</b> <%=filme[:cds]%> <b>FPS:</b> <%=filme[:fps]%> <b>Tamanho:</b> <%=filme[:tamanho]%>"><a href="/download/<%=filme[:id]%>/<%=to_file filme%>"><%=filme[:release]%></a></td><td><%=filme[:downloads]%></td></tr>
+					<% end %>
+				</tbody>
+			</table>
+		<% end %>
+	<% end %>
+</section>
